@@ -1,7 +1,7 @@
 """
-    Dict([itr])
+    CoolDict([itr])
 
-    Dict{V}()
+    CoolDict{V}()
 
 Like a normal `Dict`, but cool. Values are settable and gettable through dot notation as
 well as standard `Dict` indexing notation. The only additional restriction is that keys must
@@ -16,7 +16,7 @@ julia> a.a = 1;
 julia> a.b = "howdy";
 
 julia> a
-CoolDict{Symbol,Any} with 2 entries:
+CoolDict{Any} with 2 entries:
   :a => 1
   :b => "howdy"
 
