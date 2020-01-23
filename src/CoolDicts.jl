@@ -1,5 +1,8 @@
 module CoolDicts
 
-greet() = print("Hello World!")
+include("types.jl")
+include("utilities.jl")
+
+export CoolDict
 
 end # module
