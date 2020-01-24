@@ -35,7 +35,7 @@ end
 
 function Base.show(io::IO, cd::CoolDict{V}) where {V}
     println(io, "CoolDict{$V} with $(length(cd)) entries:")
-    for (key, val) in zip(keys(cd), values(cd))
+    for (key, val) in cd
         println(io, "  :$key => " * decorated_string(val))
     end
     return nothing
