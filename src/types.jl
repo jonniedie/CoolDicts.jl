@@ -41,9 +41,9 @@ function Base.show(io::IO, cd::CoolDict{V}) where {V}
     return nothing
 end
 
-_getdata(cd) = getfield(cd, :data)
+@inline _getdata(cd) = getfield(cd, :data)
 
-Base.length(cd::CoolDict) = length(cd._data)
+Base.length(cd::CoolDict) = length(_getdata(cd))
 Base.iterate(cd::CoolDict, args...; kwargs...) = iterate(_getdata(cd), args...; kwargs...)
 
 @inline Base.getindex(cd::CoolDict, key) = _getdata(cd)[key]
@@ -52,7 +52,7 @@ Base.iterate(cd::CoolDict, args...; kwargs...) = iterate(_getdata(cd), args...; 
     data[key] = value
 end
 
-Base.getproperty(cd::CoolDict, key::Symbol) = _getdata(cd)[key]
+Base.getproperty(cd::CoolDict, key::Symbol) = getindex(cd, key)
 Base.setproperty!(cd::CoolDict, key::Symbol, value) = setindex!(cd, value, key)
 
 Base.keys(cd::CoolDict) = keys(_getdata(cd))
