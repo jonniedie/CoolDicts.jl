@@ -1,7 +1,5 @@
 """
-    CoolDict(;kwargs...)
-
-    CoolDict{V}()
+    x = CoolDict(;kwargs...)
 
 Like a normal `Dict`, but cool. Values are settable and gettable through dot notation as
 well as standard `Dict` indexing notation. The only additional restriction is that keys must
@@ -34,6 +32,8 @@ See also: [`Dict`](@ref).
 struct CoolDict{V} <: AbstractDict{Symbol,V}
     _data::Dict{Symbol,V}
 end
+CoolDict{T}(;kwargs...) where {T} = CoolDict(Dict{Symbol,T}(kwargs...))
+CoolDict{T}() where {T} = CoolDict(Dict{Symbol,T}())
 CoolDict(;kwargs...) = CoolDict(Dict(kwargs...))
 CoolDict() = CoolDict(Dict{Symbol,Any}())
 
@@ -51,11 +51,14 @@ end
 Base.length(cd::CoolDict) = length(_getdata(cd))
 Base.iterate(cd::CoolDict, args...; kwargs...) = iterate(_getdata(cd), args...; kwargs...)
 
-@inline Base.getindex(cd::CoolDict, key) = _getdata(cd)[key]
-@inline function Base.setindex!(cd::CoolDict, value, key)
+@inline Base.getindex(cd::CoolDict, key::Symbol) = _getdata(cd)[key]
+@inline Base.getindex(cd::CoolDict, key) = cd[Symbol(key)]
+
+@inline function Base.setindex!(cd::CoolDict, value, key::Symbol)
     data = _getdata(cd)
     data[key] = value
 end
+@inline Base.setindex!(cd::CoolDict, value, key) = (cd[Symbol(key)] = value)
 
 Base.getproperty(cd::CoolDict, key::Symbol) = getindex(cd, key)
 Base.setproperty!(cd::CoolDict, key::Symbol, value) = setindex!(cd, value, key)
