@@ -41,27 +41,24 @@ function Base.show(io::IO, cd::CoolDict{V}) where {V}
     return nothing
 end
 
+_getdata(cd) = getfield(cd, :data)
+
 Base.length(cd::CoolDict) = length(cd._data)
-Base.iterate(cd::CoolDict, args...; kwargs...) = iterate(cd._data, args...; kwargs...)
+Base.iterate(cd::CoolDict, args...; kwargs...) = iterate(_getdata(cd), args...; kwargs...)
 
-Base.getindex(cd::CoolDict, key) = getfield(cd, :_data)[key]
-Base.setindex!(cd::CoolDict, value, key) = (cd._data[key] = value)
-
-function Base.getproperty(cd::CoolDict, key::Symbol)
-    if key == :_data
-        return getfield(cd, :_data)
-    elseif key in keys(cd)
-        return getfield(cd, :_data)[key]
-    else
-        return error("type CoolDict has no field $key")
-    end
+@inline Base.getindex(cd::CoolDict, key) = _getdata(cd)[key]
+@inline function Base.setindex!(cd::CoolDict, value, key)
+    data = _getdata(cd)
+    data[key] = value
 end
-Base.setproperty!(cd::CoolDict, key::Symbol, value) = (cd._data[key] = value)
 
-Base.keys(cd::CoolDict) = keys(cd._data)
-Base.values(cd::CoolDict) = values(cd._data)
+Base.getproperty(cd::CoolDict, key::Symbol) = _getdata(cd)[key]
+Base.setproperty!(cd::CoolDict, key::Symbol, value) = setindex!(cd, value, key)
 
-Base.convert(::Type{Dict}, cd::CoolDict) = cd._data
-Base.convert(::Type{Tuple}, cd::CoolDict) = Tuple(cd._data)
-Base.convert(::Type{NamedTuple}, cd::CoolDict) = (; cd._data...)
+Base.keys(cd::CoolDict) = keys(_getdata(cd))
+Base.values(cd::CoolDict) = values(_getdata(cd))
+
+Base.convert(::Type{Dict}, cd::CoolDict) = _getdata(cd)
+Base.convert(::Type{Tuple}, cd::CoolDict) = Tuple(_getdata(cd))
+Base.convert(::Type{NamedTuple}, cd::CoolDict) = (; _getdata(cd)...)
 Base.NamedTuple(cd::CoolDict) = convert(NamedTuple, cd)
