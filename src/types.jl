@@ -41,7 +41,7 @@ function Base.show(io::IO, cd::CoolDict{V}) where {V}
     return nothing
 end
 
-@inline _getdata(cd) = getfield(cd, :data)
+@inline _getdata(cd) = getfield(cd, :_data)
 
 Base.length(cd::CoolDict) = length(_getdata(cd))
 Base.iterate(cd::CoolDict, args...; kwargs...) = iterate(_getdata(cd), args...; kwargs...)
