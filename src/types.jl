@@ -9,29 +9,34 @@ be `Symbolic`.
 
 # Examples
 ```julia-repl
-julia> a = CoolDict();
+julia> x = CoolDict();
 
-julia> a.a = 1;
+julia> x.a = 1;
 
-julia> a.b = "howdy";
+julia> x.b = "howdy";
 
-julia> a
+julia> x
 CoolDict{Any} with 2 entries:
   :a => 1
   :b => "howdy"
 
-julia> a.b
+julia> x.b
 "howdy"
+
+julia> y = CoolDict(a=5, b=5.5)
+CoolDict{Real} with 2 entries:
+  :a => 5
+  :b => 5.5
 ```
 
 See also: [`Dict`](@ref).
 """
 struct CoolDict{V} <: AbstractDict{Symbol,V}
     _data::Dict{Symbol,V}
-    CoolDict(args...) = new{eltype(args).types[2]}(Dict(args...))
-    CoolDict{V}(args...) where {V} = new{V}(Dict(args...))
-    CoolDict() = new{Any}(Dict())
 end
+CoolDict(;kwargs...) = CoolDict(Dict(kwargs...))
+CoolDict() = CoolDict(Dict{Symbol,Any}())
+
 
 function Base.show(io::IO, cd::CoolDict{V}) where {V}
     println(io, "CoolDict{$V} with $(length(cd)) entries:")
