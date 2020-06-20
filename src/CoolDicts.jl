@@ -33,8 +33,8 @@ CoolDict{Real} with 2 entries:
 
 julia> z = CoolDict{Float32}(a=40, b=1)
 CoolDict{Float32} with 2 entries:
-  :a => 40f0
-  :b => 1f0
+  :a => 40.0
+  :b => 1.0
 ```
 
 See also: [`Dict`](@ref).
@@ -42,9 +42,9 @@ See also: [`Dict`](@ref).
 struct CoolDict{V} <: AbstractDict{Symbol,V}
     _data::Dict{Symbol,V}
 end
-CoolDict{T}(args...; kwargs...) where {T} = CoolDict(Dict{Symbol,T}(kwargs...))
+CoolDict{T}(args...; kwargs...) where {T} = CoolDict(Dict{Symbol,T}(args...; kwargs...))
 CoolDict{T}() where {T} = CoolDict(Dict{Symbol,T}())
-CoolDict(args...; kwargs...) = CoolDict(Dict(kwargs...))
+CoolDict(args...; kwargs...) = CoolDict(Dict(args...; kwargs...))
 CoolDict() = CoolDict(Dict{Symbol,Any}())
 
 
