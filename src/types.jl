@@ -1,5 +1,5 @@
 """
-    CoolDict([itr])
+    CoolDict(;kwargs...)
 
     CoolDict{V}()
 
