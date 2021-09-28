@@ -9,10 +9,14 @@ cooldict = (
     hetero = CoolDict(:a=>5, :b=>[5, 6]),
     dict = CoolDict(Dict([:a=>5, :b=>2])),
     cooldict = CoolDict(CoolDict(:a=>5)),
+    kwargs = CoolDict(a=5, b=2),
+    nt = CoolDict((a=5, b=2)),
     empty_explicit = CoolDict{Float64}(),
     one_arg_explicit = CoolDict{Float64}(:a=>5),
     dict_explicit = CoolDict{Float64}(Dict([:a=>5, :b=>2])),
     convert = CoolDict{Float64}(CoolDict(:a=>5, :b=>2)),
+    kwargs_explicit = CoolDict{Float64}(a=5, b=2),
+    nt_explicit = CoolDict{Float64}((a=5, b=2)),
 )
 
 @testset "Constructors" begin
@@ -20,10 +24,14 @@ cooldict = (
     @test cooldict.one_arg isa CoolDict{Int}
     @test cooldict.two_arg isa CoolDict{Int}
     @test cooldict.hetero isa CoolDict{Any}
+    @test cooldict.kwargs isa CoolDict{Int}
+    @test cooldict.nt isa CoolDict{Int}
     @test cooldict.empty_explicit isa CoolDict{Float64}
     @test cooldict.one_arg_explicit isa CoolDict{Float64}
     @test cooldict.dict_explicit isa CoolDict{Float64}
     @test cooldict.convert isa CoolDict{Float64}
+    @test cooldict.kwargs_explicit isa CoolDict{Float64}
+    @test cooldict.nt_explicit isa CoolDict{Float64}
 end
 
 @testset "Interface" begin

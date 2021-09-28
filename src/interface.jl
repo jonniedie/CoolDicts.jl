@@ -23,10 +23,14 @@ Base.values(cd::CoolDict) = values(getfield(cd, :_data))
 Base.convert(T::Type{<:Dict}, cd::CoolDict) = T(getfield(cd, :_data))
 Base.convert(::Type{NamedTuple}, cd::CoolDict) = (; getfield(cd, :_data)...)
 
-function Base.show(io::IO, cd::CoolDict{V}) where {V}
+function Base.show(io::IO, ::MIME"text/plain", cd::CoolDict{V}) where {V}
     println(io, "CoolDict{$V} with $(length(cd)) entries:")
     for (key, val) in cd
-        println(io, "  $key => " * decorated_string(val))
+        print(io, "  $(string(key)) = ")
+        show(io, val)
+        println(io,"")
     end
     return nothing
 end
+
+Base.show(io::IO, cd::CoolDict) = print(io, "CoolDict$(NamedTuple(cd))")
