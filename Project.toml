@@ -1,7 +1,7 @@
 name = "CoolDicts"
 uuid = "a100e236-6b30-40f5-acff-5ef3df07d6e9"
 authors = ["Jonnie Diegelman <47193959+jonniedie@users.noreply.github.com>"]
-version = "0.1.1"
+version = "0.1.2"
 
 [compat]
 julia = "1"
